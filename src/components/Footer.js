@@ -22,7 +22,7 @@ const Footer = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center">
                 <span className="mr-2">📞</span>
-                <span className="font-semibold">0740 7612 398</span>
+                <span className="font-semibold">020 3868 4560</span>
               </div>
               <div className="flex items-center">
                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
@@ -61,7 +61,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center">
                 <span className="mr-3">📞</span>
-                <span>0740 7612 398</span>
+                <span>020 3868 4560</span>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-500 text-sm mb-4 md:mb-0">
-            © 2024 Rosewood Investigations. All rights reserved. | Privacy Policy | Terms of Service
+            © 2025 Rosewood Investigations. All rights reserved. | Privacy Policy | Terms of Service
           </div>
           <div className="flex space-x-4">
             <div className="text-gray-500 text-sm">
