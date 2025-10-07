@@ -51,13 +51,14 @@ const Footer = () => {
               <div className="flex items-start">
                 <span className="mr-3 mt-1">📍</span>
                 <div>
-                  <p>London Office</p>
-                  <p className="text-sm text-gray-600">United Kingdom</p>
+                  <p className="font-semibold">ROSEWOOD INVESTIGATIONS.</p>
+                  <p>Units, A-J Austen house, Station view,</p>
+                  <p>Guildford, GU1 4AR</p>
                 </div>
               </div>
               <div className="flex items-center">
                 <span className="mr-3">📧</span>
-                <span>info@rosewood-investigations.com</span>
+                <span>private@rosewoodinvestigations.com</span>
               </div>
               <div className="flex items-center">
                 <span className="mr-3">📞</span>
@@ -69,9 +70,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-500 text-sm mb-4 md:mb-0">
-            © 2025 Rosewood Investigations. All rights reserved. | Privacy Policy | Terms of Service
-          </div>
+          <div className="text-gray-500 text-sm mb-4 md:mb-0">© Copyright 2025 | All Rights Reserved</div>
           <div className="flex space-x-4">
             <div className="text-gray-500 text-sm">
               Licensed & Insured Private Investigators
