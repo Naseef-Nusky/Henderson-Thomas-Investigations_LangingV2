@@ -29,11 +29,11 @@ const Header = () => {
         
         {/* Contact Information */}
         <div className="text-right text-gray-800">
-          <div className="text-xs mb-1 opacity-70 animate-pulse">Call Us Today For A Free Quote</div>
-          <div className="text-lg md:text-xl font-bold mb-1 transition-all duration-300 hover:text-cyan-600 cursor-pointer">
-            <span className="mr-2 animate-bounce">📞</span>
+          <div className="text-xs md:text-sm font-semibold mb-1 text-gray-700">Call 100% Confidential now</div>
+          <a href="tel:07407612398" className="inline-flex items-center justify-end text-lg md:text-xl font-bold mb-1 transition-colors duration-300 hover:text-cyan-600">
+            <span className="mr-2">📞</span>
             0740 7612 398
-          </div>
+          </a>
           <div className="text-xs opacity-70 flex items-center justify-end">
             <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
             AVAILABLE 24/7
