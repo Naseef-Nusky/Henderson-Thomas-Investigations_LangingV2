@@ -8,6 +8,7 @@ import ContactSection from './components/ContactSection';
 import ReviewSlider from './components/ReviewSlider';
 import Footer from './components/Footer';
 import MobileCallPill from './components/MobileCallPill';
+import FAQAccordion from './components/FAQAccordion';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <MobileCallPill />
       <HeroSection />
       <ServicesSlider />
+      <FAQAccordion />
       <Steps />
       {/* <AboutSection /> */}
       <WhyChooseSection />
