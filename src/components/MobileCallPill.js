@@ -3,15 +3,23 @@ import React from 'react';
 const MobileCallPill = () => {
   return (
     <a
-      href="tel:02038684560"
-      className="fixed left-4 right-4 bottom-5 z-50 md:hidden bg-green-500 text-white rounded-[28px] shadow-2xl px-5 py-4 flex flex-col items-center justify-center gap-1 active:scale-[0.98]"
+      href="tel:07826416466"
+      className="fixed left-4 right-4 bottom-5 z-50 md:hidden bg-blue-600 text-white rounded-xl shadow-xl px-6 py-4 flex items-center justify-center gap-3 active:scale-[0.98] transition-all duration-300"
       aria-label="Call 100% Confidential now"
     >
-      <span className="text-xs font-semibold leading-4 text-center">Call 100% Confidential now</span>
-      <span className="flex items-center gap-2 text-2xl font-extrabold tracking-wide leading-6 whitespace-nowrap">
-        <span aria-hidden className="text-white">📞</span>
-        0740 7612 398
-      </span>
+      <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+      </div>
+      <div className="text-center">
+        <div className="text-xs font-medium text-blue-100">Call 100% Confidential</div>
+        <div className="text-lg font-bold">07826 416466</div>
+        <div className="flex items-center justify-center gap-1 mt-1">
+          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+          <span className="text-xs text-green-200">Available 24/7</span>
+        </div>
+      </div>
     </a>
   );
 };

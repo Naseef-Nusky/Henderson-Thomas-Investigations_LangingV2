@@ -8,52 +8,170 @@ const ContactSection = () => {
   const submit = (e) => { e.preventDefault(); /* hook up later */ };
 
   return (
-    <section id="contact"
-      className="pt-16 pb-16 md:pt-24 md:pb-24 bg-cover bg-center bg-no-repeat relative"
-      style={{ backgroundImage: "url('/contact-bottom.jpg')" }}
-    >
-      <div className="absolute inset-0 bg-black/60" />
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">Book Your Free Consultation Today</h2>
-          <p className="text-gray-200 mt-3 max-w-2xl mx-auto">Whatever your situation, it will be familiar to our experienced private investigators.</p>
-          <div className="mt-4 inline-flex items-center justify-center text-teal-300 font-semibold">
-            <span className="mr-2">📞</span> <span>0740 7612 398</span>
-          </div>
+    <section id="contact" className="py-20 bg-white">
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            Get Your Free Consultation
+          </h2>
+          <p className="text-gray-600 mb-12 max-w-4xl mx-auto">
+            Ready to get started? Contact our professional investigators today for confidential assistance.
+          </p>
         </div>
 
-        <form onSubmit={submit} className="bg-white/95 backdrop-blur rounded-2xl shadow-sm border border-white/20 p-6 md:p-8 max-w-3xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">First Name*</label>
-              <input name="firstName" value={form.firstName} onChange={handle} required className={`w-full rounded-xl focus:ring-teal-500 ${form.firstName.trim() ? 'border-gray-300 focus:border-teal-500' : 'border-red-300 focus:border-red-500'}`} placeholder="First Name" />
+        {/* Main Content - Two Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Side - Image */}
+          <div className="order-1 lg:order-1">
+            <div className="relative">
+              <div className="rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="/contact-bottom.jpg"
+                  alt="Professional Investigation Services"
+                  className="w-full h-96 lg:h-[500px] object-cover"
+                />
+              </div>
+              {/* Floating Contact Info */}
+              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
-              <input name="lastName" value={form.lastName} onChange={handle} required className={`w-full rounded-xl focus:ring-teal-500 ${form.lastName.trim() ? 'border-gray-300 focus:border-teal-500' : 'border-red-300 focus:border-red-500'}`} placeholder="Last Name" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone*</label>
-              <input name="phone" value={form.phone} onChange={handle} required className={`w-full rounded-xl focus:ring-teal-500 ${phoneOk ? 'border-gray-300 focus:border-teal-500' : 'border-red-300 focus:border-red-500'}`} placeholder="Phone" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
-              <input type="email" name="email" value={form.email} onChange={handle} required className={`w-full rounded-xl focus:ring-teal-500 ${emailOk ? 'border-gray-300 focus:border-teal-500' : 'border-red-300 focus:border-red-500'}`} placeholder="Email" />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <textarea name="message" rows={4} value={form.message} onChange={handle} className="w-full rounded-xl border-gray-300 focus:border-teal-500 focus:ring-teal-500" placeholder="How can we help?" />
+                    <div className="text-sm text-gray-500">Call Now</div>
+                    <div className="font-bold text-gray-900">07826 416466</div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute -top-6 -right-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">24/7</div>
+                  <div className="text-sm text-gray-600">Available</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mt-6 text-right">
-            <button type="submit" disabled={!form.firstName || !form.lastName || !emailOk || !phoneOk} className={`inline-flex items-center px-6 py-3 rounded-xl font-semibold text-white ${form.firstName && form.lastName && emailOk && phoneOk ? 'bg-teal-600 hover:bg-teal-700' : 'bg-gray-400 cursor-not-allowed'}`}>Get in touch</button>
+
+          {/* Right Side - Contact Form */}
+          <div className="order-2 lg:order-2">
+            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8">
+              {/* Form Header */}
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h3>
+                <p className="text-gray-600">We'll get back to you within 24 hours</p>
+              </div>
+
+              {/* Contact Form */}
+              <form onSubmit={submit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">First Name *</label>
+                    <input 
+                      name="firstName" 
+                      value={form.firstName} 
+                      onChange={handle} 
+                      required 
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                        form.firstName.trim() 
+                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
+                          : 'border-gray-300 focus:border-blue-500'
+                      }`} 
+                      placeholder="Enter your first name" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Last Name *</label>
+                    <input 
+                      name="lastName" 
+                      value={form.lastName} 
+                      onChange={handle} 
+                      required 
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                        form.lastName.trim() 
+                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
+                          : 'border-gray-300 focus:border-blue-500'
+                      }`} 
+                      placeholder="Enter your last name" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Phone Number *</label>
+                    <input 
+                      name="phone" 
+                      value={form.phone} 
+                      onChange={handle} 
+                      required 
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                        phoneOk 
+                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
+                          : 'border-gray-300 focus:border-blue-500'
+                      }`} 
+                      placeholder="Enter your phone number" 
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-gray-700">Email Address *</label>
+                    <input 
+                      type="email" 
+                      name="email" 
+                      value={form.email} 
+                      onChange={handle} 
+                      required 
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                        emailOk 
+                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
+                          : 'border-gray-300 focus:border-blue-500'
+                      }`} 
+                      placeholder="Enter your email address" 
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">How Can We Help? *</label>
+                  <textarea 
+                    name="message" 
+                    rows={5} 
+                    value={form.message} 
+                    onChange={handle} 
+                    required
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 focus:outline-none resize-none" 
+                    placeholder="Tell us about your investigation needs..." 
+                  />
+                </div>
+                
+                {/* Submit Button */}
+                <div className="pt-4">
+                  <button 
+                    type="submit" 
+                    disabled={!form.firstName || !form.lastName || !emailOk || !phoneOk || !form.message.trim()} 
+                    className={`w-full inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
+                      form.firstName && form.lastName && emailOk && phoneOk && form.message.trim()
+                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl' 
+                        : 'bg-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </section>
   );
 };
 
 export default ContactSection;
-
-

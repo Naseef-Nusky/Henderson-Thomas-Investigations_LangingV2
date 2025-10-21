@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from 'react';
 
 const reviews = [
-  { id: 1, title: 'Heartfelt thanks', text: "Heartfelt thanks to Rosewood Investigations for aiding in the search for my long-lost friend.", author: 'James', date: '15 Oct 2023' },
-  { id: 2, title: 'One of the best', text: 'One of the best companies to go to, they helped me so much and for a reasonable price. 10/10 would recommend.', author: 'Reck Trec', date: '7 Jan 2024' },
-  { id: 3, title: 'Great business', text: 'The team is professional, friendly, and efficient. They respond quickly and are reliable.', author: 'Tony', date: '24 Nov 2023' },
-  { id: 4, title: 'Crypto Scammer Tracked', text: 'I am grateful to Rosewood Investigations who did an amazing job of locating a crypto scammer.', author: 'Daniel', date: '02 Aug 2023' },
-  { id: 5, title: 'Discreet and effective', text: 'Handled my case with total discretion and delivered solid evidence.', author: 'Ryan', date: '18 May 2024' },
-  { id: 6, title: 'Highly recommended', text: 'Clear communication and fast results. Professional throughout.', author: 'Sophia', date: '03 Mar 2024' },
+  {
+    id: 1,
+    text: "Professional, and discreet ! They kept me updated and got results quickly. Highly recommended!",
+    name: "Sarah L",
+    rating: 5
+  },
+  {
+    id: 2,
+    text: "Super easy to deal with and got results fast. No nonsense, no time-wasting—just proper professionals",
+    name: "Darrel",
+    rating: 5
+  },
+  {
+    id: 3,
+    text: "I'd never done anything like this before, but the team were so considerate and easy to talk to. They really helped take the stress out of it. Thanks again guys!",
+    name: "Rebecca W",
+    rating: 5
+  },
+  {
+    id: 4,
+    text: "Outstanding service from start to finish. They delivered exactly what they promised and exceeded my expectations.",
+    name: "Michael T",
+    rating: 5
+  }
 ];
 
-const Stars = () => (
-  <div className="flex text-green-500 mb-3" aria-label="5 star rating">
+const Stars = ({ rating }) => (
+  <div className="flex text-yellow-500 mb-3" aria-label={`${rating} star rating`}>
     {[...Array(5)].map((_, i) => (
-      <svg key={i} viewBox="0 0 20 20" className="w-4 h-4 fill-current">
+      <svg key={i} viewBox="0 0 20 20" className={`w-4 h-4 ${i < rating ? 'fill-current' : 'text-gray-300'}`}>
         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
       </svg>
     ))}
@@ -35,8 +53,12 @@ const ReviewSlider = () => {
   };
 
   const [slidesToShow, setSlidesToShow] = useState(1);
-  const [current, setCurrent] = useState(0);
+  const [index, setIndex] = useState(reviews.length); // Start at the middle set
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStartX, setTouchStartX] = useState(null);
+
+  // Create infinite loop by duplicating reviews array
+  const infiniteReviews = [...reviews, ...reviews, ...reviews];
 
   useEffect(() => {
     const onResize = () => setSlidesToShow(getSlidesToShow());
@@ -46,29 +68,42 @@ const ReviewSlider = () => {
   }, []);
 
   useEffect(() => {
-    const max = Math.max(0, reviews.length - slidesToShow);
-    if (current > max) setCurrent(max);
-  }, [slidesToShow, current]);
+    const max = Math.max(0, infiniteReviews.length - slidesToShow);
+    if (index > max) setIndex(max);
+  }, [slidesToShow, index, infiniteReviews.length]);
 
-  // Auto-slide every 5 seconds
+  // True infinite loop - seamless continuous movement
   useEffect(() => {
-    const id = setInterval(() => {
-      setCurrent((prev) => {
-        const max = Math.max(0, reviews.length - slidesToShow);
-        return prev >= max ? 0 : prev + 1;
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        // When we reach the end of the duplicated array, reset to start of middle set
+        if (nextIndex >= infiniteReviews.length - reviews.length) {
+          // Reset to start of middle set without animation
+          setTimeout(() => setIndex(reviews.length), 0);
+          return reviews.length;
+        }
+        return nextIndex;
       });
-    }, 5000);
-    return () => clearInterval(id);
-  }, [slidesToShow]);
+    }, 2000); // Move every 2 seconds for smooth chain effect
+
+    return () => clearInterval(interval);
+  }, [reviews.length, infiniteReviews.length, isAutoPlaying]);
 
   const next = () => {
-    const max = Math.max(0, reviews.length - slidesToShow);
-    setCurrent((p) => (p >= max ? 0 : p + 1));
+    setIsAutoPlaying(false); // Pause auto-play when user interacts
+    const max = Math.max(0, infiniteReviews.length - slidesToShow);
+    setIndex((i) => (i >= max ? reviews.length : i + 1));
+    setTimeout(() => setIsAutoPlaying(true), 3000); // Resume after 3 seconds
   };
-
+  
   const prev = () => {
-    const max = Math.max(0, reviews.length - slidesToShow);
-    setCurrent((p) => (p <= 0 ? max : p - 1));
+    setIsAutoPlaying(false); // Pause auto-play when user interacts
+    const max = Math.max(0, infiniteReviews.length - slidesToShow);
+    setIndex((i) => (i <= reviews.length ? max : i - 1));
+    setTimeout(() => setIsAutoPlaying(true), 3000); // Resume after 3 seconds
   };
 
   const isMobile = slidesToShow === 1;
@@ -102,75 +137,81 @@ const ReviewSlider = () => {
             style={{ touchAction: 'pan-y' }}
           >
             <div
-              className="flex transition-transform duration-500 ease-out"
+              className="flex transition-transform duration-700 ease-in-out"
               style={{
-                transform: `translateX(-${current * 100}%)`,
+                transform: `translateX(-${index * (100 / slidesToShow)}%)`,
               }}
             >
-              {reviews.map((r) => (
-                <div
-                  key={r.id}
-                  className="flex-shrink-0"
-                  style={{
-                    width: isMobile ? '100%' : `${100 / slidesToShow}%`,
-                    paddingLeft: isMobile ? '0' : '12px',
-                    paddingRight: isMobile ? '0' : '12px',
-                  }}
-                >
-                  <div
-                    className={`bg-white h-full flex flex-col ${
-                      isMobile
-                        ? 'rounded-none border-0 shadow-none p-6'
-                        : 'rounded-2xl border border-gray-200 shadow-sm p-5'
-                    }`}
-                  >
-                    <Stars />
-                    <h3 className="font-semibold text-gray-900 mb-1">{r.title}</h3>
-                    <p className="text-sm text-gray-700 leading-relaxed mb-4 flex-1">
-                      {r.text}
-                    </p>
-                    <div className="text-xs text-gray-500">
-                      —{r.author}, {r.date}
-                    </div>
-                  </div>
-                </div>
-              ))}
+               {infiniteReviews.map((r, idx) => (
+                 <div
+                   key={`${r.id}-${idx}`}
+                   className="flex-shrink-0"
+                   style={{
+                     width: isMobile ? '100%' : `${100 / slidesToShow}%`,
+                     paddingLeft: isMobile ? '0' : '12px',
+                     paddingRight: isMobile ? '0' : '12px',
+                   }}
+                 >
+                   <div
+                     className={`bg-white h-full flex flex-col ${
+                       isMobile
+                         ? 'rounded-none border-0 shadow-none p-6'
+                         : 'rounded-2xl border border-gray-200 shadow-sm p-5'
+                     }`}
+                   >
+                     <Stars rating={r.rating} />
+                     <p className="text-sm text-gray-700 leading-relaxed mb-4 flex-1">
+                       "{r.text}"
+                     </p>
+                     <div className="text-xs text-gray-500">
+                       —{r.name}
+                     </div>
+                   </div>
+                 </div>
+               ))}
             </div>
           </div>
 
-          {/* Navigation buttons */}
+          {/* Navigation arrows */}
           <button
             onClick={prev}
-            className={`absolute top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow hover:shadow-md transition-shadow ${
-              isMobile ? 'left-2 w-10 h-10' : '-left-3 w-10 h-10 hidden md:flex'
+            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-blue-50 border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-xl text-gray-600 hover:text-blue-600 transition-all duration-300 hover:shadow-2xl hover:scale-110 ${
+              isMobile ? 'left-2 w-10 h-10' : '-left-6 w-12 h-12'
             }`}
-            aria-label="Previous"
+            aria-label="Previous slide"
           >
-            ‹
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <button
             onClick={next}
-            className={`absolute top-1/2 -translate-y-1/2 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow hover:shadow-md transition-shadow ${
-              isMobile ? 'right-2 w-10 h-10' : '-right-3 w-10 h-10 hidden md:flex'
+            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-blue-50 border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-xl text-gray-600 hover:text-blue-600 transition-all duration-300 hover:shadow-2xl hover:scale-110 ${
+              isMobile ? 'right-2 w-10 h-10' : '-right-6 w-12 h-12'
             }`}
-            aria-label="Next"
+            aria-label="Next slide"
           >
-            ›
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
 
         {/* Slide indicators */}
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: Math.max(0, reviews.length - slidesToShow + 1) }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                i === current ? 'bg-green-600 w-8' : 'bg-gray-300'
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+          {Array.from({ length: reviews.length }).map((_, i) => {
+            const adjustedIndex = index % reviews.length;
+            return (
+              <button
+                key={i}
+                onClick={() => setIndex(reviews.length + i)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  i === adjustedIndex ? 'bg-yellow-500 w-8' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

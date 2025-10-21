@@ -1,199 +1,46 @@
-// import React, { useEffect, useState } from 'react';
-
-// const ServicesSlider = () => {
-//   const services = [
-//     {
-//       id: 1,
-//       title: 'Individual Investigations',
-//       desc:
-//         'Our team of highly skilled detectives is proficient in various investigations, ranging from online dating inquiries to missing person and matrimonial cases. You can rely on their expertise to assist you effectively.',
-//       img: '/individual.jpg',
-//       cta: 'Enquire Now',
-//     },
-//     {
-//       id: 2,
-//       title: 'Covert Surveillance',
-//       desc:
-//         'Our team of skilled detectives, both female and male, will provide you with essential photo and video evidence relevant to your case.',
-//       img: '/covert.jpg',
-//       cta: 'Enquire Now',
-//     },
-//     {
-//       id: 3,
-//       title: 'Fraud Investigation',
-//       desc:
-//         'The prevalence of online fraud in the UK results in significant financial losses amounting to billions of pounds annually. If you have been affected by online fraud, contact us without delay for immediate assistance.',
-//       img: '/fraud.jpg',
-//       cta: 'Enquire Now',
-//     },
-//     {
-//       id: 4,
-//       title: 'Missing Persons',
-//       desc:
-//         'In the UK, a person is reported missing every 90 seconds. With the expertise of our professionals, we can aid you in tracing individuals both within the country and internationally.',
-//       img: '/missing.jpg',
-//       cta: 'Enquire Now',
-//     },
-//   ];
-
-//   // slides per view responsive: 1 mobile, 2 iPad, 3 iPad Pro, 4 desktop
-//   const getSlidesToShow = () => {
-//     if (typeof window === 'undefined') return 1;
-//     const w = window.innerWidth;
-//     if (w >= 1280) return 4;      // large desktops
-//     if (w >= 1024) return 3;      // iPad Pro / large tablet
-//     if (w >= 768) return 2;       // iPad / tablet
-//     return 1;
-//   };
-
-//   const [slidesToShow, setSlidesToShow] = useState(getSlidesToShow());
-//   const [index, setIndex] = useState(0);
-//   const [touchStartX, setTouchStartX] = useState(null);
-
-//   useEffect(() => {
-//     const onResize = () => setSlidesToShow(getSlidesToShow());
-//     // set initial value on mount for SSR safety
-//     setSlidesToShow(getSlidesToShow());
-//     window.addEventListener('resize', onResize);
-//     return () => window.removeEventListener('resize', onResize);
-//   }, []);
-
-//   useEffect(() => {
-//     const max = Math.max(0, services.length - slidesToShow);
-//     if (index > max) setIndex(max);
-//   }, [slidesToShow]);
-
-//   const next = () => {
-//     const max = Math.max(0, services.length - slidesToShow);
-//     setIndex((i) => (i >= max ? 0 : i + 1));
-//   };
-//   const prev = () => {
-//     const max = Math.max(0, services.length - slidesToShow);
-//     setIndex((i) => (i <= 0 ? max : i - 1));
-//   };
-
-//   return (
-//     <section className="py-16 bg-white overflow-x-hidden">
-//       <div className="w-full px-0 md:px-3">
-//         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
-//           We Help Individuals & Businesses Just Like You
-//         </h2>
-//         <p className="text-gray-600 mb-8 max-w-4xl mx-auto text-center">
-//           Take control of your narrative today. With our unwavering commitment to your cause and our unparalleled expertise, you're never alone in your search for answers.
-//         </p>
-
-//         <div className="relative">
-//           <div
-//             className="overflow-hidden w-full overscroll-x-contain"
-//             onTouchStart={(e) => setTouchStartX(e.changedTouches[0].clientX)}
-//             onTouchEnd={(e) => {
-//               if (touchStartX === null) return;
-//               const delta = e.changedTouches[0].clientX - touchStartX;
-//               if (Math.abs(delta) > 40) {
-//                 if (delta > 0) prev(); else next();
-//               }
-//               setTouchStartX(null);
-//             }}
-//             style={{ touchAction: 'pan-y' }}
-//           >
-//             <div
-//               className="flex transition-transform duration-500 ease-out"
-//               style={{
-//                 transform: `translateX(-${(index * (100 / slidesToShow))}%)`,
-//                 width: `${(services.length * 100) / slidesToShow}%`
-//               }}
-//             >
-//               {services.map((s) => (
-//                 <div
-//                   key={s.id}
-//                   className="px-0 md:px-3 flex-shrink-0 min-w-0 box-border"
-//                   style={{ width: `${100 / slidesToShow}%` }}
-//                 >
-//                   <div className="bg-white rounded-none md:rounded-3xl border-0 md:border border-gray-200 overflow-hidden h-full flex flex-col">
-//                     <div
-//                       className="h-56 md:h-64 w-full bg-cover bg-center"
-//                       style={{ backgroundImage: `url(${s.img})` }}
-//                     />
-//                     <div className="p-4 md:p-6 flex-1 flex flex-col">
-//                       <h3 className="text-xl font-semibold text-gray-900 mb-2">
-//                         {s.title}
-//                       </h3>
-//                       <p className="text-gray-600 text-sm leading-relaxed mb-6 break-words">
-//                         {s.desc}
-//                       </p>
-//                       <div className="mt-auto">
-//                         <a href="#contact" className="inline-flex items-center justify-center w-full md:w-auto bg-teal-600 hover:bg-teal-700 text-white px-5 py-3 rounded-full font-semibold transition-colors">
-//                           {s.cta}
-//                           <span className="ml-2">→</span>
-//                         </a>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           </div>
-
-//           {/* arrows */}
-//           <button
-//             onClick={prev}
-//             className="flex absolute left-2 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-gray-200 shadow w-12 h-12 md:w-10 md:h-10 rounded-full items-center justify-center"
-//             aria-label="Previous"
-//           >
-//             ‹
-//           </button>
-//           <button
-//             onClick={next}
-//             className="flex absolute right-2 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white border border-gray-200 shadow w-12 h-12 md:w-10 md:h-10 rounded-full items-center justify-center"
-//             aria-label="Next"
-//           >
-//             ›
-//           </button>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ServicesSlider;
-
 import React, { useEffect, useState } from 'react';
 
 const ServicesSlider = () => {
   const services = [
     {
       id: 1,
-      title: 'Individual Investigations',
+      title: 'Covert Surveillance',
       desc:
-        'Our team of highly skilled detectives is proficient in various investigations, ranging from online dating inquiries to missing person and matrimonial cases. You can rely on their expertise to assist you effectively.',
-      img: '/individual.jpg',
-      cta: 'Enquire Now',
+        'Our expert private investigators carry out discreet surveillance to capture photo and video evidence you can rely on. Whether it\'s for legal, personal, or corporate matters, we provide clear, professional results with complete confidentiality.',
+      img: '/covert.jpg',
     },
     {
       id: 2,
-      title: 'Covert Surveillance',
+      title: 'Missing Person Investigation',
       desc:
-        'Our team of skilled detectives, both female and male, will provide you with essential photo and video evidence relevant to your case.',
-      img: '/covert.jpg',
-      cta: 'Enquire Now',
+        'Every 90 seconds someone goes missing in the UK. Our team uses advanced tracing methods, intelligence databases, and global contacts to locate individuals quickly and effectively — giving you answers and peace of mind.',
+      img: '/missing.jpg',
     },
     {
       id: 3,
       title: 'Fraud Investigation',
       desc:
-        'The prevalence of online fraud in the UK results in significant financial losses amounting to billions of pounds annually. If you have been affected by online fraud, contact us without delay for immediate assistance.',
+        'Fraud costs UK victims billions each year. We specialise in exposing scams, financial deception, and identity theft, gathering evidence you can act on. Protect yourself with fast, discreet support from our experienced fraud investigators.',
       img: '/fraud.jpg',
-      cta: 'Enquire Now',
     },
     {
       id: 4,
-      title: 'Missing Persons',
+      title: 'Personal Investigations',
       desc:
-        'In the UK, a person is reported missing every 90 seconds. With the expertise of our professionals, we can aid you in tracing individuals both within the country and internationally.',
-      img: '/missing.jpg',
-      cta: 'Enquire Now',
+        'From background checks and online dating enquiries to infidelity and family matters, our detectives handle sensitive cases with care and discretion. We uncover the truth so you can make informed decisions with confidence.',
+      img: '/personal.jpg',
+    },
+    {
+      id: 5,
+      title: 'Background Checking Services',
+      desc:
+        'We provide thorough background checks for employment, finance, and personal matters. With discreet and accurate verification, our investigators deliver the facts you need to protect your interests and make smart choices.',
+      img: '/background.jpg',
     },
   ];
+
+  // Create infinite loop by duplicating services
+  const infiniteServices = [...services, ...services, ...services];
 
   // Responsive breakpoints:
   // Mobile (< 768px): 1 slide
@@ -210,7 +57,8 @@ const ServicesSlider = () => {
   };
 
   const [slidesToShow, setSlidesToShow] = useState(1);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(services.length); // Start at the middle set
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStartX, setTouchStartX] = useState(null);
 
   useEffect(() => {
@@ -221,18 +69,42 @@ const ServicesSlider = () => {
   }, []);
 
   useEffect(() => {
-    const max = Math.max(0, services.length - slidesToShow);
+    const max = Math.max(0, infiniteServices.length - slidesToShow);
     if (index > max) setIndex(max);
-  }, [slidesToShow, index, services.length]);
+  }, [slidesToShow, index, infiniteServices.length]);
+
+  // True infinite loop - seamless continuous movement
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        // When we reach the end of the duplicated array, reset to start of middle set
+        if (nextIndex >= infiniteServices.length - services.length) {
+          // Reset to start of middle set without animation
+          setTimeout(() => setIndex(services.length), 0);
+          return services.length;
+        }
+        return nextIndex;
+      });
+    }, 2000); // Move every 2 seconds for smooth chain effect
+
+    return () => clearInterval(interval);
+  }, [services.length, infiniteServices.length, isAutoPlaying]);
 
   const next = () => {
-    const max = Math.max(0, services.length - slidesToShow);
-    setIndex((i) => (i >= max ? 0 : i + 1));
+    setIsAutoPlaying(false); // Pause auto-play when user interacts
+    const max = Math.max(0, infiniteServices.length - slidesToShow);
+    setIndex((i) => (i >= max ? services.length : i + 1));
+    setTimeout(() => setIsAutoPlaying(true), 3000); // Resume after 3 seconds
   };
   
   const prev = () => {
-    const max = Math.max(0, services.length - slidesToShow);
-    setIndex((i) => (i <= 0 ? max : i - 1));
+    setIsAutoPlaying(false); // Pause auto-play when user interacts
+    const max = Math.max(0, infiniteServices.length - slidesToShow);
+    setIndex((i) => (i <= services.length ? max : i - 1));
+    setTimeout(() => setIsAutoPlaying(true), 3000); // Resume after 3 seconds
   };
 
   const isMobile = slidesToShow === 1;
@@ -241,10 +113,10 @@ const ServicesSlider = () => {
     <section className="py-16 bg-gray-50">
       <div className="w-full">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center px-4">
-          We Help Individuals & Businesses Just Like You
+          Our Professional Services
         </h2>
         <p className="text-gray-600 mb-12 max-w-4xl mx-auto text-center px-4">
-          Take control of your narrative today. With our unwavering commitment to your cause and our unparalleled expertise, you're never alone in your search for answers.
+          Confidential, professional, and tailored investigation services delivering clear, reliable results.
         </p>
 
         <div className="relative container mx-auto px-4">
@@ -262,14 +134,14 @@ const ServicesSlider = () => {
             style={{ touchAction: 'pan-y' }}
           >
             <div
-              className="flex transition-transform duration-500 ease-out"
+              className="flex transition-transform duration-700 ease-in-out"
               style={{
-                transform: `translateX(-${index * 100}%)`,
+                transform: `translateX(-${index * (100 / slidesToShow)}%)`,
               }}
             >
-              {services.map((s) => (
+              {infiniteServices.map((s, idx) => (
                 <div
-                  key={s.id}
+                  key={`${s.id}-${idx}`}
                   className="flex-shrink-0"
                   style={{ 
                     width: isMobile ? '100%' : `${100 / slidesToShow}%`,
@@ -277,26 +149,25 @@ const ServicesSlider = () => {
                     paddingRight: isMobile ? '0' : '12px'
                   }}
                 >
-                  <div className={`bg-white overflow-hidden h-full flex flex-col hover:shadow-md transition-shadow ${
-                    isMobile ? 'rounded-xl border-0 shadow-none' : 'rounded-xl shadow-sm border border-gray-200'
+                  <div className={`bg-white overflow-hidden h-full flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${
+                    isMobile ? 'rounded-2xl border-0 shadow-lg' : 'rounded-2xl shadow-lg border border-gray-100'
                   }`}>
-                    <div
-                      className={`w-full bg-cover bg-center ${isMobile ? 'h-64' : 'h-56'}`}
-                      style={{ backgroundImage: `url(${s.img})` }}
-                    />
+                    <div className="relative">
+                      <div
+                        className={`w-full bg-cover bg-center ${isMobile ? 'h-64' : 'h-56'}`}
+                        style={{ backgroundImage: `url(${s.img})` }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-xl font-bold text-white mb-2 drop-shadow-lg">
+                          {s.title}
+                        </h3>
+                      </div>
+                    </div>
                     <div className="p-6 flex-1 flex flex-col">
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                        {s.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1">
+                      <p className="text-gray-700 text-sm leading-relaxed">
                         {s.desc}
                       </p>
-                      <div className="mt-auto">
-                        <button className="inline-flex items-center justify-center w-full bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full font-semibold transition-colors">
-                          {s.cta}
-                          <span className="ml-2">→</span>
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -307,36 +178,43 @@ const ServicesSlider = () => {
           {/* Navigation arrows */}
           <button
             onClick={prev}
-            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 border border-gray-300 shadow-lg rounded-full flex items-center justify-center text-2xl text-gray-700 hover:text-gray-900 transition-colors ${
+            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-blue-50 border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-xl text-gray-600 hover:text-blue-600 transition-all duration-300 hover:shadow-2xl hover:scale-110 ${
               isMobile ? 'left-2 w-10 h-10' : '-left-6 w-12 h-12'
             }`}
             aria-label="Previous slide"
           >
-            ‹
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <button
             onClick={next}
-            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 border border-gray-300 shadow-lg rounded-full flex items-center justify-center text-2xl text-gray-700 hover:text-gray-900 transition-colors ${
+            className={`absolute top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-blue-50 border border-gray-200 shadow-xl rounded-full flex items-center justify-center text-xl text-gray-600 hover:text-blue-600 transition-all duration-300 hover:shadow-2xl hover:scale-110 ${
               isMobile ? 'right-2 w-10 h-10' : '-right-6 w-12 h-12'
             }`}
             aria-label="Next slide"
           >
-            ›
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
 
         {/* Slide indicators */}
-        <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: Math.max(0, services.length - slidesToShow + 1) }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setIndex(i)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                i === index ? 'bg-teal-600 w-8' : 'bg-gray-300'
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+        <div className="flex justify-center gap-3 mt-8">
+          {Array.from({ length: services.length }).map((_, i) => {
+            const adjustedIndex = index >= services.length ? index - services.length : index;
+            return (
+              <button
+                key={i}
+                onClick={() => setIndex(i + services.length)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  (adjustedIndex % services.length) === i ? 'bg-blue-600 w-8' : 'bg-gray-300 w-2 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

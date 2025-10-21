@@ -22,14 +22,14 @@ const Header = () => {
         <div className="logo group flex items-center">
           <img 
             src="/logo.png" 
-            alt="Rosewood Investigations Logo" 
+            alt="Henderson Thomas Investigations Logo" 
             className="h-10 w-auto transition-all duration-300 group-hover:scale-105"
           />
         </div>
         
         {/* Mobile call icon (mobile only) */}
         <a
-          href="tel:07407612398"
+          href="tel:07826416466"
           className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200 bg-white/90 text-gray-700 shadow-sm"
           aria-label="Call us"
         >
@@ -40,14 +40,18 @@ const Header = () => {
         
         {/* Contact Information */}
         <div className="text-right text-gray-800 hidden md:block">
-          <div className="text-xs md:text-sm font-semibold mb-1 text-gray-700">Call 100% Confidential now</div>
-          <a href="tel:07407612398" className="inline-flex items-center justify-end text-lg md:text-xl font-bold mb-1 transition-colors duration-300 hover:text-cyan-600">
-            <span className="mr-2">📞</span>
-            0740 7612 398
-          </a>
-          <div className="text-xs opacity-70 flex items-center justify-end">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-            AVAILABLE 24/7
+          <div className="px-2 py-1">
+            <div className="text-xs font-medium text-gray-500 mb-1">Call 100% Confidential</div>
+            <a href="tel:07826416466" className="inline-flex items-center justify-end text-lg font-bold text-gray-900 transition-colors duration-300 hover:text-blue-600">
+              <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              07826 416466
+            </a>
+            <div className="flex items-center justify-end mt-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+              <span className="text-xs text-green-600 font-medium">Available 24/7</span>
+            </div>
           </div>
         </div>
       </div>
