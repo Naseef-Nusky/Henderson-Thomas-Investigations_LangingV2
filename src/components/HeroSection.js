@@ -146,7 +146,7 @@ const HeroSection = () => {
         case 2:
           return (
             <div className="mb-8 text-center">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">When do you want the investigation to start?</h3>
+              <h3 className="text-xl font-semibold text-white mb-6 drop-shadow-lg">When do you want the investigation to start?</h3>
 
               <div className="grid grid-cols-2 gap-4 w-full">
               {['ASAP', 'Within a week', 'Within a month', 'Not sure'].map((option) => (
@@ -169,7 +169,7 @@ const HeroSection = () => {
         case 3:
           return (
             <div className="mb-8 text-center">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">What's your full name?</h3>
+              <h3 className="text-xl font-semibold text-white mb-6 drop-shadow-lg">What's your full name?</h3>
 
               <div className="w-full">
                 <input
@@ -186,7 +186,7 @@ const HeroSection = () => {
         case 4:
           return (
             <div className="mb-8 text-center">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">
+              <h3 className="text-xl font-semibold text-white mb-6 drop-shadow-lg">
                 Nice to meet you {formData.name || 'there'}. And what's your email address?
               </h3>
 
@@ -205,7 +205,7 @@ const HeroSection = () => {
         case 5:
           return (
             <div className="mb-8 text-center">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6">Finally, what's your telephone number?</h3>
+              <h3 className="text-xl font-semibold text-white mb-6 drop-shadow-lg">Finally, what's your telephone number?</h3>
 
               <div className="w-full">
                 <input
@@ -369,7 +369,7 @@ const HeroSection = () => {
                 {currentStep > 1 && (
                   <button 
                     onClick={handlePrev}
-                    className="w-full flex items-center justify-center px-6 py-3 border border-white/30 text-white rounded-xl font-medium hover:border-blue-400 hover:text-blue-300 transition-all duration-300 hover:bg-white/10"
+                    className="w-full flex items-center justify-center px-6 py-3 border border-white/30 text-white rounded-xl font-medium bg-white/10 backdrop-blur-sm hover:border-blue-400 hover:text-blue-300 transition-all duration-300 hover:bg-white/20"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

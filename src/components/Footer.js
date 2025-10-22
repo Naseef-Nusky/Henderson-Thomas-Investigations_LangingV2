@@ -56,10 +56,10 @@ const Footer = () => {
                   <p>London W8 6SN</p>
                 </div>
               </div>
-              {/* <div className="flex items-center">
+              <div className="flex items-center">
                 <span className="mr-3">📧</span>
-                <span>hendersonthomasinvestigations@outlook.com</span>
-              </div> */}
+                <span>private@hendersonthomasinvestigations.com</span>
+              </div>
               <div className="flex items-center">
                 <span className="mr-3">📞</span>
                 <span>07826 416466</span>
@@ -69,17 +69,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-500 text-sm mb-4 md:mb-0">© Copyright 2025 | All Rights Reserved</div>
-          <div className="flex space-x-4">
-            <div className="text-gray-500 text-sm">
-              Licensed & Insured Private Investigators
-            </div>
-            <div className="flex items-center">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-              <span className="text-sm text-gray-500">24/7 Available</span>
-            </div>
-          </div>
+        <div className="border-t border-gray-200 mt-8 pt-8 flex justify-center items-center">
+          <div className="text-gray-500 text-sm">© Copyright 2025 | All Rights Reserved</div>
         </div>
       </div>
     </footer>
