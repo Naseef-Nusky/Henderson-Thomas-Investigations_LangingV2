@@ -32,48 +32,48 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section id="contact" className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
             Get Your Free Consultation
           </h2>
-          <p className="text-gray-600 mb-12 max-w-4xl mx-auto">
+          <p className="text-gray-600 mb-8 md:mb-12 max-w-4xl mx-auto text-sm md:text-base">
             Ready to get started? Contact our professional investigators today for confidential assistance.
           </p>
         </div>
 
         {/* Main Content - Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left Side - Image */}
           <div className="order-1 lg:order-1">
             <div className="relative">
-              <div className="rounded-3xl overflow-hidden shadow-2xl">
+              <div className="rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <img
                   src="/contact-bottom.jpg"
                   alt="Professional Investigation Services"
-                  className="w-full h-96 lg:h-[500px] object-cover"
+                  className="w-full h-64 md:h-96 lg:h-[500px] object-cover"
                 />
               </div>
               {/* Floating Contact Info */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+              <div className="absolute -bottom-3 -left-3 md:-bottom-6 md:-left-6 bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl border border-gray-100">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-3 md:mr-4">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
             </div>
             <div>
-                    <div className="text-sm text-gray-500">Call Now</div>
-                    <div className="font-bold text-gray-900">07826 416466</div>
+                    <div className="text-xs md:text-sm text-gray-500">Call Now</div>
+                    <div className="font-bold text-gray-900 text-sm md:text-base">07826 416466</div>
                   </div>
                 </div>
               </div>
-              <div className="absolute -top-6 -right-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+              <div className="absolute -top-3 -right-3 md:-top-6 md:-right-6 bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl border border-gray-100">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">24/7</div>
-                  <div className="text-sm text-gray-600">Available</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-1">24/7</div>
+                  <div className="text-xs md:text-sm text-gray-600">Available</div>
                 </div>
               </div>
             </div>
@@ -81,11 +81,11 @@ const ContactSection = () => {
 
           {/* Right Side - Contact Form */}
           <div className="order-2 lg:order-2">
-            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8">
+            <div className="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8">
               {/* Form Header */}
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h3>
-                <p className="text-gray-600">We'll get back to you within 24 hours</p>
+              <div className="mb-6 md:mb-8">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h3>
+                <p className="text-gray-600 text-sm md:text-base">We'll get back to you within 24 hours</p>
                 {status.ok && (
                   <div className="mt-3 text-green-600 text-sm font-semibold">Message sent successfully.</div>
                 )}

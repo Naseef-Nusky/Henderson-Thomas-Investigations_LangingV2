@@ -116,9 +116,9 @@ const Steps = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <div className="flex justify-center">
-            <button className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-lg hover:shadow-xl">
+            <a href="#contact" className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-300 shadow-lg hover:shadow-xl">
               Start Your Investigation
-            </button>
+            </a>
           </div>
         </div>
       </div>

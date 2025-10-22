@@ -41,31 +41,31 @@ const WhyChooseSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-gray-50">
+    <section className="py-16 md:py-20 bg-gradient-to-br from-slate-50 via-white to-gray-50">
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-        <div className="gap-12 lg:flex lg:items-center">
+        <div className="gap-8 lg:gap-12 lg:flex lg:items-center">
           {/* Left content */}
           <div className="lg:flex-1 lg:pr-12">
-            <div className="mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <div className="mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                 Why Choose Us?
               </h2>
-              <p className="text-gray-600 mb-12 max-w-4xl mx-auto">
+              <p className="text-gray-600 mb-8 md:mb-12 text-sm md:text-base">
                 With over 25 years of experience, Henderson Thomas Investigations delivers discreet and results-oriented private investigation services you can trust.
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start group">
-                  <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mr-6 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
+                  <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mr-4 md:mr-6 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300">
                     {feature.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2 group-hover:text-blue-600 transition-colors duration-300">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                       {feature.description}
                     </p>
                   </div>
@@ -74,34 +74,34 @@ const WhyChooseSection = () => {
             </div>
 
             {/* Bottom CTA */}
-            <div className="mt-12">
-              <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <div className="mt-8 md:mt-12">
+              <a href="#contact" className="inline-block w-full md:w-auto px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-center">
                 Get Started Today
-              </button>
+              </a>
             </div>
           </div>
 
           {/* Right image */}
-          <div className="lg:flex-1 mt-12 lg:mt-0">
+          <div className="lg:flex-1 mt-8 md:mt-12 lg:mt-0">
             <div className="relative">
-              <div className="rounded-3xl overflow-hidden shadow-2xl">
+              <div className="rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
                 <img
                   src="/why.jpg"
                   alt="Why choose Henderson Thomas Investigations"
-                  className="w-full h-96 lg:h-[500px] object-cover"
+                  className="w-full h-64 md:h-96 lg:h-[500px] object-cover"
                 />
               </div>
               {/* Floating stats */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+              <div className="absolute -bottom-3 -left-3 md:-bottom-6 md:-left-6 bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl border border-gray-100">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">25+</div>
-                  <div className="text-sm text-gray-600">Years Experience</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-1">25+</div>
+                  <div className="text-xs md:text-sm text-gray-600">Years Experience</div>
                 </div>
               </div>
-              <div className="absolute -top-6 -right-6 bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+              <div className="absolute -top-3 -right-3 md:-top-6 md:-right-6 bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl border border-gray-100">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">100%</div>
-                  <div className="text-sm text-gray-600">Confidential</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-1">100%</div>
+                  <div className="text-xs md:text-sm text-gray-600">Confidential</div>
                 </div>
               </div>
             </div>

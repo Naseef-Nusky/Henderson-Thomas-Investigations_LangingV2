@@ -306,12 +306,12 @@ const HeroSection = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <button className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-                <span className="flex items-center justify-center">
+                <a href="#contact" className="flex items-center justify-center">
                   Start Free Consultation
                   <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
-                </span>
+                </a>
               </button>
               <button className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/30 hover:border-blue-400 text-white hover:text-blue-300 font-bold text-lg rounded-2xl transition-all duration-300 hover:bg-blue-500/10 backdrop-blur-sm">
                 Call Now: 07826 416466

@@ -4,8 +4,16 @@ const MobileCallPill = () => {
   return (
     <a
       href="tel:07826416466"
-      className="fixed inset-x-4 md:hidden z-[60] bg-blue-600 text-white rounded-xl shadow-xl px-6 py-4 flex items-center justify-center gap-3 transition-transform duration-300 transform-gpu"
-      style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
+      className="fixed inset-x-4 md:hidden z-[60] bg-blue-600 text-white rounded-xl shadow-xl px-6 py-4 flex items-center justify-center gap-3"
+      style={{ 
+        bottom: 'calc(1rem + env(safe-area-inset-bottom))',
+        position: 'fixed',
+        touchAction: 'manipulation',
+        WebkitTransform: 'translate3d(0,0,0)',
+        transform: 'translate3d(0,0,0)',
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden'
+      }}
       aria-label="Call 100% Confidential now"
     >
       <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -16,10 +24,7 @@ const MobileCallPill = () => {
       <div className="text-center">
         <div className="text-xs font-medium text-blue-100">Call 100% Confidential</div>
         <div className="text-sm font-bold">07826 416466</div>
-        <div className="flex items-center justify-center gap-1 mt-1">
-          <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-xs text-green-200">Available 24/7</span>
-        </div>
+        
       </div>
     </a>
   );
