@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 
 const ContactSection = () => {
-  const [form, setForm] = useState({ firstName: '', lastName: '', phone: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
   const phoneOk = /^\+?\d[\d\s-]{6,}$/.test(form.phone);
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const submit = (e) => { e.preventDefault(); /* hook up later */ };
+  const [status, setStatus] = useState({ sending: false, ok: null, error: '' });
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !emailOk || !phoneOk || !form.message.trim()) return;
+    setStatus({ sending: true, ok: null, error: '' });
+    try {
+      const res = await fetch('/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({
+          name: form.name.trim(),
+          mobile: form.phone.trim(),
+          email: form.email.trim(),
+          message: form.message.trim(),
+          source: 'contact',
+        }).toString(),
+      });
+      const data = await res.json().catch(() => ({ ok: false, error: 'Invalid server response' }));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to send');
+      setStatus({ sending: false, ok: true, error: '' });
+      setForm({ name: '', phone: '', email: '', message: '' });
+    } catch (err) {
+      setStatus({ sending: false, ok: false, error: err.message || 'Failed to send' });
+    }
+  };
 
   return (
     <section id="contact" className="py-20 bg-white">
@@ -62,42 +86,30 @@ const ContactSection = () => {
               <div className="mb-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Send Us a Message</h3>
                 <p className="text-gray-600">We'll get back to you within 24 hours</p>
+                {status.ok && (
+                  <div className="mt-3 text-green-600 text-sm font-semibold">Message sent successfully.</div>
+                )}
+                {status.ok === false && (
+                  <div className="mt-3 text-red-600 text-sm font-semibold">{status.error}</div>
+                )}
               </div>
 
               {/* Contact Form */}
               <form onSubmit={submit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">First Name *</label>
-                    <input 
-                      name="firstName" 
-                      value={form.firstName} 
-                      onChange={handle} 
-                      required 
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
-                        form.firstName.trim() 
-                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
-                          : 'border-gray-300 focus:border-blue-500'
-                      }`} 
-                      placeholder="Enter your first name" 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="block text-sm font-semibold text-gray-700">Last Name *</label>
-                    <input 
-                      name="lastName" 
-                      value={form.lastName} 
-                      onChange={handle} 
-                      required 
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
-                        form.lastName.trim() 
-                          ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
-                          : 'border-gray-300 focus:border-blue-500'
-                      }`} 
-                      placeholder="Enter your last name" 
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-gray-700">Name *</label>
+                  <input 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handle} 
+                    required 
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
+                      form.name.trim() 
+                        ? 'border-green-300 focus:border-green-500 bg-green-50/30' 
+                        : 'border-gray-300 focus:border-blue-500'
+                    }`} 
+                    placeholder="Enter your full name" 
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -152,17 +164,17 @@ const ContactSection = () => {
                 <div className="pt-4">
                   <button 
                     type="submit" 
-                    disabled={!form.firstName || !form.lastName || !emailOk || !phoneOk || !form.message.trim()} 
+                    disabled={status.sending || !form.name || !emailOk || !form.message.trim() || !phoneOk} 
                     className={`w-full inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
-                      form.firstName && form.lastName && emailOk && phoneOk && form.message.trim()
+                      !status.sending && form.name && emailOk && phoneOk && form.message.trim()
                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl' 
                         : 'bg-gray-400 cursor-not-allowed'
                     }`}
                   >
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-5 h-5 mr-2 ${status.sending ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
-                    Send Message
+                    {status.sending ? 'Sending...' : 'Send Message'}
                   </button>
                 </div>
               </form>

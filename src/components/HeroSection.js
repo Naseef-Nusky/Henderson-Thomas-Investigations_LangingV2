@@ -41,6 +41,36 @@ const HeroSection = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const [submitState, setSubmitState] = useState({ sending: false, ok: null, error: '' });
+
+  const submitHeroForm = async () => {
+    if (!formData.name.trim() || !formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !/^\+?\d[\d\s-]{6,}$/.test(formData.phone)) {
+      setSubmitState({ sending: false, ok: false, error: 'Please complete all required fields correctly.' });
+      return;
+    }
+    setSubmitState({ sending: true, ok: null, error: '' });
+    try {
+      const res = await fetch('/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({
+          name: formData.name,
+          mobile: formData.phone,
+          email: formData.email,
+          message: `Hero form submission`,
+          source: 'hero',
+          investigationType: formData.investigationType || formData.otherType || 'N/A',
+          timing: formData.timing || 'N/A',
+        }).toString(),
+      });
+      const data = await res.json().catch(() => ({ ok: false, error: 'Invalid server response' }));
+      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to send');
+      setSubmitState({ sending: false, ok: true, error: '' });
+    } catch (err) {
+      setSubmitState({ sending: false, ok: false, error: err.message || 'Failed to send' });
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
         case 1:
@@ -195,7 +225,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen bg-cover bg-center bg-no-repeat bg-fixed" 
+    <section className="relative min-h-screen bg-cover bg-center bg-no-repeat md:bg-fixed overflow-hidden" 
              style={{ backgroundImage: "url('/hero.jpg')" }}>
       {/* Dark overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/80"></div>
@@ -216,8 +246,8 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[90vh]">
+      <div className="relative z-10 container mx-auto px-4 pt-24 md:pt-28 pb-16">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center min-h-[90vh]">
           {/* Left side - Content */}
           <div className={`space-y-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
             {/* Badge */}
@@ -227,26 +257,26 @@ const HeroSection = () => {
             </div>
 
             {/* Main heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-2xl">
-              <span className="block font-semibold text-3xl md:text-4xl lg:text-5xl mb-2">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-normal drop-shadow-2xl break-words">
+              <span className="block font-semibold text-2xl md:text-4xl lg:text-5xl mb-2">
                 Finding a Trustworthy
               </span>
-              <span className="block font-bold text-4xl md:text-5xl lg:text-6xl mb-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
+              <span className="block font-bold text-3xl md:text-5xl lg:text-6xl mb-4 pb-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
                 Private Investigator
               </span>
-              <span className="block font-medium text-2xl md:text-3xl lg:text-4xl text-white/90 leading-relaxed">
+              <span className="block font-medium text-xl md:text-3xl lg:text-4xl text-white/90 leading-relaxed">
                 Might Be More Affordable Than You Expect!
               </span>
             </h1>
 
             {/* Subheading */}
-            <p className="text-2xl text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
+            <p className="text-lg md:text-2xl text-gray-200 leading-relaxed max-w-2xl drop-shadow-lg">
               <span className="text-blue-300 font-bold">We offer a 100% free consultation</span> – with no obligation. 
-              Simply complete the questions below or call our office today.
+              Simply complete the questions or call our office today.
             </p>
 
             {/* Features */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               <div className="flex items-center space-x-4 text-gray-200">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-lg font-bold">✓</span>
@@ -274,8 +304,8 @@ const HeroSection = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6">
-              <button className="group px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <button className="group w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
                 <span className="flex items-center justify-center">
                   Start Free Consultation
                   <svg className="w-6 h-6 ml-3 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +313,7 @@ const HeroSection = () => {
                   </svg>
                 </span>
               </button>
-              <button className="px-10 py-5 border-2 border-white/30 hover:border-blue-400 text-white hover:text-blue-300 font-bold text-lg rounded-2xl transition-all duration-300 hover:bg-blue-500/10 backdrop-blur-sm">
+              <button className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 border-2 border-white/30 hover:border-blue-400 text-white hover:text-blue-300 font-bold text-lg rounded-2xl transition-all duration-300 hover:bg-blue-500/10 backdrop-blur-sm">
                 Call Now: 07826 416466
               </button>
             </div>
@@ -292,7 +322,7 @@ const HeroSection = () => {
           {/* Right side - Form */}
           <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             {/* Modern Card Design with Background Image */}
-            <div className="relative bg-cover bg-center bg-no-repeat rounded-3xl shadow-2xl p-8 hover:shadow-3xl transition-all duration-300 overflow-hidden" 
+            <div className="relative bg-cover bg-center bg-no-repeat rounded-3xl shadow-2xl p-6 md:p-8 hover:shadow-3xl transition-all duration-300 overflow-hidden" 
                  style={{ backgroundImage: "url('/herobg2.jpg')" }}>
               {/* Dark overlay for readability */}
               <div className="absolute inset-0 bg-black/60 rounded-2xl"></div>
@@ -361,14 +391,22 @@ const HeroSection = () => {
                     </span>
                   </button>
                 ) : (
-                  <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                    <span className="flex items-center justify-center">
-                      Submit & Get Your Quote
-                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </span>
-                  </button>
+                  <div>
+                    <button onClick={submitHeroForm} disabled={submitState.sending} className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-60">
+                      <span className="flex items-center justify-center">
+                        {submitState.sending ? 'Sending...' : 'Submit & Get Your Quote'}
+                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                    </button>
+                    {submitState.ok && (
+                      <div className="mt-3 text-green-300 text-sm font-semibold text-center">Request sent successfully.</div>
+                    )}
+                    {submitState.ok === false && (
+                      <div className="mt-3 text-red-300 text-sm font-semibold text-center">{submitState.error}</div>
+                    )}
+                  </div>
                 )}
               </div>
               </div>

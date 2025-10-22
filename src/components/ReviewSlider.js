@@ -90,7 +90,7 @@ const ReviewSlider = () => {
     }, 2000); // Move every 2 seconds for smooth chain effect
 
     return () => clearInterval(interval);
-  }, [reviews.length, infiniteReviews.length, isAutoPlaying]);
+  }, [infiniteReviews.length, isAutoPlaying]);
 
   const next = () => {
     setIsAutoPlaying(false); // Pause auto-play when user interacts

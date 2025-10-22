@@ -2,22 +2,27 @@ import React, { useState, useEffect } from 'react';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-white/95 backdrop-blur-xl py-3 shadow-2xl' 
-        : 'bg-white/90 backdrop-blur-md py-4'
+    <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      isMobile
+        ? 'bg-white py-3 shadow-md border-b border-gray-200'
+        : (isScrolled ? 'bg-white/95 backdrop-blur-xl py-3 shadow-2xl' : 'bg-white/90 backdrop-blur-md py-4')
     }`}>
-      <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
+      <div className="container mx-auto px-3 md:px-8 flex justify-between items-center">
         {/* Logo */}
         <div className="logo group flex items-center">
           <img 
@@ -27,16 +32,7 @@ const Header = () => {
           />
         </div>
         
-        {/* Mobile call icon (mobile only) */}
-        <a
-          href="tel:07826416466"
-          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200 bg-white/90 text-gray-700 shadow-sm"
-          aria-label="Call us"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-            <path d="M2.25 6.75c0-1.243 1.007-2.25 2.25-2.25h1.5c.93 0 1.74.57 2.06 1.438l.87 2.322a2.25 2.25 0 01-.54 2.403l-1.02 1.02a.75.75 0 00-.165.822 11.27 11.27 0 006.045 6.045.75.75 0 00.822-.165l1.02-1.02a2.25 2.25 0 012.403-.54l2.322.87A2.25 2.25 0 0119.5 20.25v1.5c0 1.243-1.007 2.25-2.25 2.25h-.75C7.708 24 0 16.292 0 6.75v-.75z" />
-          </svg>
-        </a>
+        {/* Mobile call icon removed per request */}
         
         {/* Contact Information */}
         <div className="text-right text-gray-800 hidden md:block">

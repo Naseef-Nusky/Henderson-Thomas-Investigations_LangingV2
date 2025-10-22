@@ -4,7 +4,8 @@ const MobileCallPill = () => {
   return (
     <a
       href="tel:07826416466"
-      className="fixed left-4 right-4 bottom-5 z-50 md:hidden bg-blue-600 text-white rounded-xl shadow-xl px-6 py-4 flex items-center justify-center gap-3 active:scale-[0.98] transition-all duration-300"
+      className="fixed inset-x-4 md:hidden z-[60] bg-blue-600 text-white rounded-xl shadow-xl px-6 py-4 flex items-center justify-center gap-3 transition-transform duration-300 transform-gpu"
+      style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
       aria-label="Call 100% Confidential now"
     >
       <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -14,7 +15,7 @@ const MobileCallPill = () => {
       </div>
       <div className="text-center">
         <div className="text-xs font-medium text-blue-100">Call 100% Confidential</div>
-        <div className="text-lg font-bold">07826 416466</div>
+        <div className="text-sm font-bold">07826 416466</div>
         <div className="flex items-center justify-center gap-1 mt-1">
           <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
           <span className="text-xs text-green-200">Available 24/7</span>

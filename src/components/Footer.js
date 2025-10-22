@@ -56,10 +56,10 @@ const Footer = () => {
                   <p>London W8 6SN</p>
                 </div>
               </div>
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <span className="mr-3">📧</span>
                 <span>hendersonthomasinvestigations@outlook.com</span>
-              </div>
+              </div> */}
               <div className="flex items-center">
                 <span className="mr-3">📞</span>
                 <span>07826 416466</span>
