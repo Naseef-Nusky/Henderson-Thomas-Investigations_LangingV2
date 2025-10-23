@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
 
 const HeroSection = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -50,22 +51,43 @@ const HeroSection = () => {
     }
     setSubmitState({ sending: true, ok: null, error: '' });
     try {
-      const res = await fetch('/contact.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: new URLSearchParams({
+      const EMAILJS_CONFIG = {
+        serviceId: 'service_z9nrpnh',
+        templateId: 'template_ito81i4',
+        publicKey: 'KMtxeuThzMItKsmDc',
+      };
+
+      const result = await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        {
+          title: `Hero Quote Request from ${formData.name}`,
           name: formData.name,
-          mobile: formData.phone,
           email: formData.email,
-          message: `Hero form submission`,
-          source: 'hero',
+          phone: formData.phone,
+          message: 'Hero form submission',
           investigationType: formData.investigationType || formData.otherType || 'N/A',
           timing: formData.timing || 'N/A',
-        }).toString(),
-      });
-      const data = await res.json().catch(() => ({ ok: false, error: 'Invalid server response' }));
-      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to send');
+          time: new Date().toLocaleString(),
+        },
+        EMAILJS_CONFIG.publicKey
+      );
+
+      if (result.status !== 200) {
+        throw new Error('Failed to send');
+      }
       setSubmitState({ sending: false, ok: true, error: '' });
+      
+      // Reset form after successful submission
+      setFormData({
+        investigationType: '',
+        timing: '',
+        name: '',
+        email: '',
+        phone: '',
+        otherType: ''
+      });
+      setCurrentStep(1);
     } catch (err) {
       setSubmitState({ sending: false, ok: false, error: err.message || 'Failed to send' });
     }
