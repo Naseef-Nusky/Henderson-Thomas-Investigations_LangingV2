@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
+  const formRef = useRef(null);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
   const phoneOk = /^\+?\d[\d\s-]{6,}$/.test(form.phone);
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,23 +13,34 @@ const ContactSection = () => {
     if (!form.name || !emailOk || !phoneOk || !form.message.trim()) return;
     setStatus({ sending: true, ok: null, error: '' });
     try {
-      const res = await fetch('/contact.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: new URLSearchParams({
+      const EMAILJS_CONFIG = {
+        serviceId: 'service_z9nrpnh',
+        templateId: 'template_ito81i4',
+        publicKey: 'KMtxeuThzMItKsmDc',
+      };
+
+      const result = await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        {
+          title: `New Website Contact from ${form.name}`,
           name: form.name.trim(),
-          mobile: form.phone.trim(),
           email: form.email.trim(),
+          phone: form.phone.trim(),
           message: form.message.trim(),
-          source: 'contact',
-        }).toString(),
-      });
-      const data = await res.json().catch(() => ({ ok: false, error: 'Invalid server response' }));
-      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to send');
-      setStatus({ sending: false, ok: true, error: '' });
-      setForm({ name: '', phone: '', email: '', message: '' });
+          time: new Date().toLocaleString(),
+        },
+        EMAILJS_CONFIG.publicKey
+      );
+
+      if (result.status === 200) {
+        setStatus({ sending: false, ok: true, error: '' });
+        setForm({ name: '', phone: '', email: '', message: '' });
+      } else {
+        throw new Error('Failed to send');
+      }
     } catch (err) {
-      setStatus({ sending: false, ok: false, error: err.message || 'Failed to send' });
+      setStatus({ sending: false, ok: false, error: err?.text || err?.message || 'Failed to send' });
     }
   };
 
@@ -95,7 +108,7 @@ const ContactSection = () => {
               </div>
 
               {/* Contact Form */}
-              <form onSubmit={submit} className="space-y-6">
+              <form ref={formRef} onSubmit={submit} className="space-y-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700">Name *</label>
                   <input 
