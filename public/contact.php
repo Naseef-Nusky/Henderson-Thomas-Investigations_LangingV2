@@ -4,6 +4,14 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
+// Basic server-side logging (writes to public/mail.log)
+$__MAIL_LOG = __DIR__ . '/mail.log';
+function log_line($message) {
+  global $__MAIL_LOG;
+  $line = '[' . date('Y-m-d H:i:s') . '] ' . $message . "\n";
+  @file_put_contents($__MAIL_LOG, $line, FILE_APPEND);
+}
+
 // Allow only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   http_response_code(405);
@@ -37,11 +45,15 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
   exit;
 }
 
+// Log request meta (no PII beyond email domain)
+log_line('Incoming request from IP=' . ($_SERVER['REMOTE_ADDR'] ?? 'n/a') . ', UA=' . substr(($_SERVER['HTTP_USER_AGENT'] ?? 'n/a'), 0, 160));
+log_line('Source=' . ($source ?: 'n/a') . ', InvestigationType=' . ($investigationType ?: 'n/a') . ', Timing=' . ($timing ?: 'n/a'));
+
 // Compose email
 // Send to both the primary and the alternate Outlook inboxes
 $recipients = [
   'hendersonthomasinvestigations@outlook.com',
-  'mhendersonthomasinvestigations@outlook.com'
+  'naseefnusky09@gmail.com'
 ];
 $subject = 'New Website Contact Request - Henderson Thomas Investigations';
 
@@ -126,18 +138,24 @@ $headers[] = 'Importance: Normal';
 // Try SMTP first, then fall back to regular mail() for each recipient
 $anySent = false;
 include_once 'smtp_mail.php';
+log_line('Attempting send to recipients: ' . implode(', ', $recipients));
 foreach ($recipients as $rcpt) {
   $sent = sendSMTPMail($rcpt, $subject, $body_html, 'Website@hendersonthomasinvestigations.co.uk', 'Henderson Thomas Investigations', $email);
+  log_line('SMTP to ' . $rcpt . ' => ' . ($sent ? 'OK' : 'FAIL'));
   if (!$sent) {
     // Use envelope sender for better deliverability (-f)
     $sent = @mail($rcpt, $subject, $body, implode("\r\n", $headers), '-f Website@hendersonthomasinvestigations.co.uk');
+    $err = error_get_last();
+    log_line('mail() to ' . $rcpt . ' => ' . ($sent ? 'OK' : 'FAIL') . ' err=' . ($err ? json_encode($err) : 'none'));
   }
   if ($sent) { $anySent = true; }
 }
 
 if ($anySent) {
+  log_line('Send result: SUCCESS');
   echo json_encode(['ok' => true]);
 } else {
+  log_line('Send result: FAILED');
   http_response_code(500);
   echo json_encode(['ok' => false, 'error' => 'Failed to send email']);
 }
