@@ -21,14 +21,32 @@ const HeroSection = () => {
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
     setFormData(prev => ({ ...prev, investigationType: option }));
+    setFieldErrors(prev => ({ ...prev, step1: '' }));
   };
 
   const handleNext = () => {
-    // simple per-step validation
-    if (currentStep === 1 && !formData.investigationType) return;
-    if (currentStep === 2 && !formData.timing) return;
-    if (currentStep === 3 && !formData.name.trim()) return;
-    if (currentStep === 4 && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))) return;
+    // step-specific validation with messages
+    if (currentStep === 1 && !formData.investigationType) {
+      setFieldErrors(prev => ({ ...prev, step1: 'Please select an investigation type.' }));
+      return;
+    }
+    if (currentStep === 2 && !formData.timing) {
+      setFieldErrors(prev => ({ ...prev, step2: 'Please choose when to start the investigation.' }));
+      return;
+    }
+    if (currentStep === 3 && !formData.name.trim()) {
+      setFieldErrors(prev => ({ ...prev, step3: 'Please enter your full name.' }));
+      return;
+    }
+    if (currentStep === 4 && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))) {
+      setFieldErrors(prev => ({ ...prev, step4: 'Please enter a valid email address.' }));
+      return;
+    }
+    // clear current step error and advance
+    if (currentStep === 1) setFieldErrors(prev => ({ ...prev, step1: '' }));
+    if (currentStep === 2) setFieldErrors(prev => ({ ...prev, step2: '' }));
+    if (currentStep === 3) setFieldErrors(prev => ({ ...prev, step3: '' }));
+    if (currentStep === 4) setFieldErrors(prev => ({ ...prev, step4: '' }));
     if (currentStep < 5) setCurrentStep(currentStep + 1);
   };
 
@@ -40,9 +58,13 @@ const HeroSection = () => {
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (field === 'timing') setFieldErrors(prev => ({ ...prev, step2: '' }));
+    if (field === 'name') setFieldErrors(prev => ({ ...prev, step3: '' }));
+    if (field === 'email') setFieldErrors(prev => ({ ...prev, step4: '' }));
   };
 
   const [submitState, setSubmitState] = useState({ sending: false, ok: null, error: '' });
+  const [fieldErrors, setFieldErrors] = useState({ step1: '', step2: '', step3: '', step4: '' });
 
   const submitHeroForm = async () => {
     if (!formData.name.trim() || !formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) || !/^\+?\d[\d\s-]{6,}$/.test(formData.phone)) {
@@ -162,6 +184,7 @@ const HeroSection = () => {
                 />
               </div>
             )}
+            {fieldErrors.step1 && <p className="mt-3 text-red-300 text-sm">{fieldErrors.step1}</p>}
           </div>
         );
 
@@ -185,6 +208,7 @@ const HeroSection = () => {
                 </button>
               ))}
             </div>
+            {fieldErrors.step2 && <p className="mt-3 text-red-300 text-sm">{fieldErrors.step2}</p>}
           </div>
         );
 
@@ -202,6 +226,7 @@ const HeroSection = () => {
                   className={`w-full p-4 border-2 rounded-full text-gray-600 focus:outline-none transition-all duration-300 ${formData.name.trim() ? 'border-gray-300 focus:border-cyan-400' : 'border-red-300 focus:border-red-400'}`}
                 />
               </div>
+              {fieldErrors.step3 && <p className="mt-3 text-red-300 text-sm">{fieldErrors.step3}</p>}
             </div>
           );
 
@@ -221,6 +246,7 @@ const HeroSection = () => {
                   className={`w-full p-4 border-2 rounded-full text-gray-600 focus:outline-none transition-all duration-300 ${/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ? 'border-gray-300 focus:border-cyan-400' : 'border-red-300 focus:border-red-400'}`}
                 />
               </div>
+              {fieldErrors.step4 && <p className="mt-3 text-red-300 text-sm">{fieldErrors.step4}</p>}
             </div>
           );
 

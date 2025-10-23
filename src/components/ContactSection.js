@@ -6,16 +6,20 @@ const ContactSection = () => {
   const formRef = useRef(null);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
   const phoneOk = /^\+?\d[\d\s-]{6,}$/.test(form.phone);
+  const [touched, setTouched] = useState({ name: false, phone: false, email: false, message: false });
+  const [submitTried, setSubmitTried] = useState(false);
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const onBlur = (e) => setTouched({ ...touched, [e.target.name]: true });
   const [status, setStatus] = useState({ sending: false, ok: null, error: '' });
   const submit = async (e) => {
     e.preventDefault();
+    setSubmitTried(true);
     if (!form.name || !emailOk || !phoneOk || !form.message.trim()) return;
     setStatus({ sending: true, ok: null, error: '' });
     try {
       const EMAILJS_CONFIG = {
         serviceId: 'service_z9nrpnh',
-        templateId: 'template_ito81i4',
+        templateId: 'template_o96o6re',
         publicKey: 'KMtxeuThzMItKsmDc',
       };
 
@@ -115,6 +119,7 @@ const ContactSection = () => {
                     name="name" 
                     value={form.name} 
                     onChange={handle} 
+                    onBlur={onBlur}
                     required 
                     className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
                       form.name.trim() 
@@ -123,6 +128,9 @@ const ContactSection = () => {
                     }`} 
                     placeholder="Enter your full name" 
                   />
+                  {((touched.name || submitTried) && !form.name.trim()) && (
+                    <p className="text-red-600 text-sm">Please enter your name.</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,6 +140,7 @@ const ContactSection = () => {
                       name="phone" 
                       value={form.phone} 
                       onChange={handle} 
+                      onBlur={onBlur}
                       required 
                       className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
                         phoneOk 
@@ -140,6 +149,9 @@ const ContactSection = () => {
                       }`} 
                       placeholder="Enter your phone number" 
                     />
+                    {((touched.phone || submitTried) && !phoneOk) && (
+                      <p className="text-red-600 text-sm">Please enter a valid phone number.</p>
+                    )}
                   </div>
                   
                   <div className="space-y-2">
@@ -149,6 +161,7 @@ const ContactSection = () => {
                       name="email" 
                       value={form.email} 
                       onChange={handle} 
+                      onBlur={onBlur}
                       required 
                       className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-100 ${
                         emailOk 
@@ -157,6 +170,9 @@ const ContactSection = () => {
                       }`} 
                       placeholder="Enter your email address" 
                     />
+                    {((touched.email || submitTried) && !emailOk) && (
+                      <p className="text-red-600 text-sm">Please enter a valid email address.</p>
+                    )}
                   </div>
                 </div>
                 
@@ -167,10 +183,14 @@ const ContactSection = () => {
                     rows={5} 
                     value={form.message} 
                     onChange={handle} 
+                    onBlur={onBlur}
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 focus:outline-none resize-none" 
                     placeholder="Tell us about your investigation needs..." 
                   />
+                  {((touched.message || submitTried) && !form.message.trim()) && (
+                    <p className="text-red-600 text-sm">Please enter a short description of your request.</p>
+                  )}
                 </div>
                 
                 {/* Submit Button */}
