@@ -293,13 +293,13 @@ const HeroSection = () => {
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-lg font-bold">✓</span>
                 </div>
-                <span className="text-lg font-medium">Licensed Professionals</span>
+                <span className="text-lg font-medium">Trusted Professionals</span>
               </div>
               <div className="flex items-center space-x-4 text-gray-200">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-lg font-bold">✓</span>
                 </div>
-                <span className="text-lg font-medium">Fast Results</span>
+                <span className="text-lg font-medium">Bespoke Solutions</span>
               </div>
             </div>
 
