@@ -38,26 +38,104 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Compose email
-$to = 'hendersonthomasinvestigations@outlook.com';
-$subject = 'New Website Contact Request';
-$body = "New contact request from Henderson Thomas Investigations website\n\n"
+// Send to both the primary and the alternate Outlook inboxes
+$recipients = [
+  'hendersonthomasinvestigations@outlook.com',
+  'mhendersonthomasinvestigations@outlook.com'
+];
+$subject = 'New Website Contact Request - Henderson Thomas Investigations';
+
+// Create HTML email body for better compatibility
+$body_html = "
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title>New Contact Request</title>
+</head>
+<body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+    <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
+        <h2 style='color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;'>New Contact Request</h2>
+        
+        <div style='background: #f8fafc; padding: 15px; border-radius: 5px; margin: 20px 0;'>
+            <h3 style='margin-top: 0; color: #1e40af;'>Contact Information</h3>
+            <p><strong>Name:</strong> " . htmlspecialchars($name) . "</p>
+            <p><strong>Mobile:</strong> " . htmlspecialchars($mobile) . "</p>
+            <p><strong>Email:</strong> " . htmlspecialchars($email) . "</p>
+        </div>
+        
+        <div style='background: #f0f9ff; padding: 15px; border-radius: 5px; margin: 20px 0;'>
+            <h3 style='margin-top: 0; color: #1e40af;'>Request Details</h3>
+            " . ($source !== '' ? "<p><strong>Source:</strong> " . htmlspecialchars($source) . "</p>" : '') . "
+            " . ($investigationType !== '' ? "<p><strong>Investigation Type:</strong> " . htmlspecialchars($investigationType) . "</p>" : '') . "
+            " . ($timing !== '' ? "<p><strong>Timing:</strong> " . htmlspecialchars($timing) . "</p>" : '') . "
+        </div>
+        
+        " . ($message !== '' ? "
+        <div style='background: #fef3c7; padding: 15px; border-radius: 5px; margin: 20px 0;'>
+            <h3 style='margin-top: 0; color: #92400e;'>Message</h3>
+            <p style='white-space: pre-wrap;'>" . htmlspecialchars($message) . "</p>
+        </div>
+        " : '') . "
+        
+        <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280;'>
+            <p>This email was sent from the Henderson Thomas Investigations website contact form.</p>
+            <p>Timestamp: " . date('Y-m-d H:i:s') . "</p>
+        </div>
+    </div>
+</body>
+</html>";
+
+// Plain text version for email clients that don't support HTML
+$body_text = "New contact request from Henderson Thomas Investigations website\n\n"
       . "Name: $name\n"
       . "Mobile: $mobile\n"
       . "Email: $email\n"
       . ($source !== '' ? "Source: $source\n" : '')
       . ($investigationType !== '' ? "Investigation Type: $investigationType\n" : '')
       . ($timing !== '' ? "Timing: $timing\n" : '')
-      . "Message: " . ($message !== '' ? $message : '(no message)') . "\n";
+      . "Message: " . ($message !== '' ? $message : '(no message)') . "\n"
+      . "\nTimestamp: " . date('Y-m-d H:i:s');
 
-// Email headers
+// Create multipart email with both HTML and text versions
+$boundary = md5(uniqid(time()));
+$body = "--$boundary\r\n"
+      . "Content-Type: text/plain; charset=UTF-8\r\n"
+      . "Content-Transfer-Encoding: 7bit\r\n\r\n"
+      . $body_text . "\r\n\r\n"
+      . "--$boundary\r\n"
+      . "Content-Type: text/html; charset=UTF-8\r\n"
+      . "Content-Transfer-Encoding: 7bit\r\n\r\n"
+      . $body_html . "\r\n\r\n"
+      . "--$boundary--";
+
+// Enhanced email headers for better delivery
 $headers = [];
-$headers[] = 'From: noreply@' . ($_SERVER['HTTP_HOST'] ?? 'website');
+$headers[] = 'MIME-Version: 1.0';
+$headers[] = 'Content-Type: multipart/alternative; boundary="' . $boundary . '"';
+$headers[] = 'From: Henderson Thomas Investigations <Website@hendersonthomasinvestigations.co.uk>';
 $headers[] = 'Reply-To: ' . $email;
+$headers[] = 'Return-Path: Website@hendersonthomasinvestigations.co.uk';
+$headers[] = 'Sender: Website@hendersonthomasinvestigations.co.uk';
+$headers[] = 'Date: ' . date(DATE_RFC2822);
+$headers[] = 'Message-ID: <' . time() . '.' . md5(uniqid(mt_rand(), true)) . '@hendersonthomasinvestigations.co.uk>';
 $headers[] = 'X-Mailer: PHP/' . phpversion();
+$headers[] = 'X-Priority: 3';
+$headers[] = 'X-MSMail-Priority: Normal';
+$headers[] = 'Importance: Normal';
 
-$sent = @mail($to, $subject, $body, implode("\r\n", $headers));
+// Try SMTP first, then fall back to regular mail() for each recipient
+$anySent = false;
+include_once 'smtp_mail.php';
+foreach ($recipients as $rcpt) {
+  $sent = sendSMTPMail($rcpt, $subject, $body_html, 'Website@hendersonthomasinvestigations.co.uk', 'Henderson Thomas Investigations', $email);
+  if (!$sent) {
+    // Use envelope sender for better deliverability (-f)
+    $sent = @mail($rcpt, $subject, $body, implode("\r\n", $headers), '-f Website@hendersonthomasinvestigations.co.uk');
+  }
+  if ($sent) { $anySent = true; }
+}
 
-if ($sent) {
+if ($anySent) {
   echo json_encode(['ok' => true]);
 } else {
   http_response_code(500);
